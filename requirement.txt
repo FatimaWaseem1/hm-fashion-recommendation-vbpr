@@ -1,0 +1,9 @@
+pandas
+numpy
+pyarrow
+cornac
+torch
+torchvision
+sentence-transformers
+transformers
+pillow
