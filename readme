@@ -1,0 +1,55 @@
+# Multimodal Fashion Recommendation on H&M Data (VBPR + FashionCLIP)
+
+COMP1818 Artificial Intelligence Applications coursework, University of Greenwich (2026–27).
+Author: Fatima Waseem
+
+This project replicates and extends Rippberger & Neidhardt (2025), who used VBPR on the H&M
+dataset and found text item features outperformed image features. It compares general-purpose
+features (ResNet50 images, SentenceBERT text) with a fashion-specific multimodal model
+(FashionCLIP), against random, most-popular, repurchase and tuned BPR baselines.
+
+## Dataset
+H&M Personalized Fashion Recommendations (Kaggle):
+https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations
+
+The raw data (~30 GB including images) is not included in this repository. You must accept the
+competition rules on Kaggle to access it.
+
+## Notebooks (run in order)
+| Notebook | Purpose | Kaggle link |
+|---|---|---|
+| 01_praguet.ipynb | EDA, 12-week train / 1-week test split, saves parquet files | [link] |
+| 02_baselines_and_evaluation.ipynb | MAP@12 / Recall@12, random, popular, repurchase, BPR + tuning | [link] |
+| 03 features.ipynb | SBERT, ResNet50 and FashionCLIP item embeddings | [link] |
+| 04_feauture 4 .ipynb | VBPR with each feature set, 3 seeds, repurchase hybrid | [link] |
+
+## How to run
+1. Open each notebook on Kaggle (links above) and run them in order 01 → 04.
+2. Attach the H&M competition data as an input to every notebook.
+3. Attach the outputs of earlier notebooks as inputs to later ones
+   (01 → 02, 03, 04; 03 → 04).
+4. Enable **GPU** and **Internet** in Settings for notebooks 03 and 04
+   (internet is needed to install Cornac and download pretrained models).
+5. Saved outputs (parquet splits, embeddings, result CSVs) are available in each Kaggle
+   notebook's Output tab, so the results can be checked without rerunning.
+
+Approximate runtimes on a Kaggle T4 GPU: 03 ≈ 30 min, 04 ≈ 2 hours.
+
+## Requirements
+See `requirements.txt`. Main libraries: pandas, numpy, pyarrow, cornac, torch, torchvision,
+sentence-transformers, transformers, pillow.
+
+## Reproducibility
+Random seeds are fixed (42 by default; 7 and 123 for the additional seed runs).
+The evaluation uses a time-based split: train 24 Jun – 15 Sep 2020, test 16 – 22 Sep 2020,
+with BPR hyperparameters tuned on a validation week (9 – 15 Sep 2020).
+
+## References
+- Rippberger, G. & Neidhardt, J. (2025). Comparative Analysis of Fashion Captioning for
+  Multimodal Fashion Recommendation. RecSys 2025 Workshop (DaQuaMRec), CEUR-WS.
+- He, R. & McAuley, J. (2016). VBPR: Visual Bayesian Personalized Ranking from Implicit Feedback. AAAI.
+- Rendle, S. et al. (2009). BPR: Bayesian Personalized Ranking from Implicit Feedback. UAI.
+- Chia, P. J. et al. (2022). Contrastive language and vision learning of general fashion concepts
+  (FashionCLIP). Scientific Reports.
+- Salah, A. et al. (2020). Cornac: A Comparative Framework for Multimodal Recommender Systems. JMLR.
+- FashionCLIP model: https://huggingface.co/patrickjohncyh/fashion-clip
